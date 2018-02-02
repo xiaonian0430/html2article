@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/TruthHun/gotil/util"
 	"golang.org/x/net/html"
 	"golang.org/x/net/html/atom"
 	"golang.org/x/net/html/charset"
@@ -57,6 +58,7 @@ func NewFromUrl(urlStr string) (ext *extractor, err error) {
 	if err != nil {
 		return
 	}
+
 	req.Header = make(http.Header)
 	req.Header.Set("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36")
 	resp, err := http.DefaultClient.Do(req)
@@ -71,6 +73,20 @@ func NewFromUrl(urlStr string) (ext *extractor, err error) {
 		return
 	}
 	ext, err = NewFromHtml(string(bs))
+	if err != nil {
+		return
+	}
+	ext.urlStr = urlStr
+	return
+}
+
+func NewFromUrlByHttplib(urlStr string, headers ...map[string]string) (ext *extractor, err error) {
+	req := util.BuildRequest("get", urlStr, "", "", "", true, false, headers...)
+	str, err := req.String()
+	if err != nil {
+		return
+	}
+	ext, err = NewFromHtml(str)
 	if err != nil {
 		return
 	}

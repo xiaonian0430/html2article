@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/TruthHun/gotil/util"
+	"github.com/xiaonian0430/gotil/util"
 	"golang.org/x/net/html"
 	"golang.org/x/net/html/atom"
 	"golang.org/x/net/html/charset"
